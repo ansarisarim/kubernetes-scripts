@@ -1,0 +1,26 @@
+
+# to create the metrics server.
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+( provided by the kubernetes community )
+( but there is some changes in it)
+
+kubectl edit deployment  metrics-server -n kube-system
+
+containers:
+      - args:
+        - --cert-dir=/tmp
+        - --secure-port=10250
+        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+        - --kubelet-use-node-status-port
+        - --metric-resolution=15s
+        - --kubelet-insecure-tls    ---> (this is missing have to be add)
+
+
+
+   kow after 5min bellow commannds work
+kubectl top nodes
+kubectl top pods
+kubectl top pods --containers=true -n kube-system
+
