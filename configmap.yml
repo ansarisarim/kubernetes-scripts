@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  url: my.sql//@qdwd
+  username: db@123
+  password: sarime2dwd
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: default
+spec:
+  containers:
+    - name: database
+      image: mysql
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: root-password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: mysql-password
+
