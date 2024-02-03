@@ -5,7 +5,8 @@ metadata:
 data:
   url: my.sql//@qdwd
   username: db@123
-  password: sarime2dwd
+  root-password: sarime2dwd
+  mysql-password: someotherpassword
 
 ---
 
