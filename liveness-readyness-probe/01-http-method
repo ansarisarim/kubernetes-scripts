@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: pode-abc
+spec:
+  containers:
+  - name: container-1
+    image: ubuntu
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 120 <---- <we specify according over how much over container take time to starte. otherwise it check container not
+                           not starte kubelete kill the container and restarte it again and again >
+      periodSeconds: 5
+
+    readinessProbe:
+      exec:
+    command:
+    - cat
+    - /tmp/healthy
+    initialDelaySeconds: 5
+    periodSeconds: 5  
