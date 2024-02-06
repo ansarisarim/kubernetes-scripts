@@ -1,0 +1,28 @@
+take t2.micro in same vpc
+
+ open NFS port and also kunernetes server port
+
+
+ now congigure NFS server on ec2.
+
+ sudo apt install nfs-kernel-server -y
+
+ sudo mkdir -p /apt/nfs_share
+
+ chmod 777 /apt/nfs_share
+
+ sudo chown -R nobody:nogroup /apt/nfs_share
+
+ sudo vi /etc/exports
+     /apt/nfs_share *(rw,sync,no_subtree_check,no_root_squash)
+
+ sudo exportfs -a
+ 
+ sudo systemctl restart nfs-kernel-server
+ 
+
+now configure NFS client on every master and worker.
+
+sudo apt install nfs-common -y
+
+and open nfs port to every master and client matchin.
