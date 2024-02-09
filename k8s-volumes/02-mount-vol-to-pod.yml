@@ -15,7 +15,7 @@ spec:
           targetPort: 8080 
       volumeMounts:
         - name: vol-1
-          mountPath: /tmp/mongodb        
+          mountPath: /data       
   volumes:
     - name: vol-1
       hostPath:
@@ -33,4 +33,230 @@ spec:
   ports:
     - port: 123
       targetPort: 8080
+
+
+
+
+
+
+
+apiVersion: v1 
+kind: Replicasets
+metadata: 
+  - name: replica-for-prod
+    namespace: default
+    labels:
+      labelmatch:
+        env: prod
+spec: 
+    replica: 2
+    selector:
+      evn: pod
+templete:
+   metadata:
+     labels:
+       evn: prod      
+   containers:
+     - name: container1
+       image: mongo      
+       ports:0c
+         containerPort: 8080
+         targetPort: 123
+    volumes:
+      name: vol1
+      pesistantvolumeclaim:
+        claimname: vol1
+
+
+
+
+
+        
+          
+
+           
+apiVersion: apps/v1  # Assuming you want to create a ReplicaSet
+kind: ReplicaSet
+metadata:
+  name: replica-for-prod
+  namespace: default
+  labels:
+    labelmatch:
+      env: prod
+spec:
+  replicas: 1  # Set the desired number of replicas
+  selector:
+    matchLabels:
+      env: prod  # Match labels for the pods
+  template:
+    metadata:
+      labels:
+        env: prod  # Labels for the pods
+    spec:
+      containers:
+      - name: container1
+        image: mongo
+        ports:
+        - containerPort: 8080
+          targetPort: 123
+      volumes:
+      - name: vol1
+        persistentVolumeClaim:
+          claimName: vol1
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+spec:
+  resources:
+    requests:
+      storage: 2Mi
+  volumeMode: ebs
+  accessModes:
+    - ReadWriteOnce
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mypv
+spec:
+  capacity:
+    storage: <Size>
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /tmp
+    server: 172.17.0.2
+
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  - url: my.sql//@qdwd
+  - username: db@123
+  - password: sarime2dwd
+
+---
+
+apiVersion: v1
+kind: pod
+metadate:
+  name: pod01
+  namespace: default
+spec:
+   containers:
+     - name: database
+       image: mysql
+       env: 
+         - name: root password
+           value: 
+         - name: mysql password
+           vale:  
+
+
+
+
+
+
+
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  url: my.sql//@qdwd
+  username: db@123
+  password: sarime2dwd
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: default
+spec:
+  containers:
+    - name: database
+      image: mysql
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: password
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: pode-abc
+spec:
+  containers:
+  - name: container-1
+    image: ubuntu
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 120   <we specify according over how much over container take time to starte. otherwise it check container not
+                                  not starte kubelete kill the container and restarte it again and again >
+      periodSeconds: 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
