@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javawebapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javawebapp
+  template:
+    metadata:
+      labels:
+        app: javawebapp
+    spec:
+      containers:
+      - name: javawebapp
+        image: dockerhandson/python-flask-app:1
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javawebapp
+spec:
+  selector:
+    app: javawebapp
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer 
+

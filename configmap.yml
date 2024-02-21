@@ -17,7 +17,7 @@ metadata:
   namespace: default
 spec:
   containers:
-    - name: database
+  - name: database
       image: mysql
       env:
         - name: MYSQL_ROOT_PASSWORD
@@ -31,3 +31,83 @@ spec:
               name: db-config
               key: mysql-password
 
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javawebappp
+spec:
+  selector:
+    matchLabels:
+      app: javawebappp
+strategy:
+    type: rollingUpdate
+      maxsurge: 1
+      maxunavelable: 1
+minreadysecond: 60            
+  template:
+    metadata:
+      labels:
+        app: javawebappp
+    spec:
+      containers:
+      - name: myapp
+        image: dockerhadson/java-web-app:3
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+spec:
+  selector:
+    app: myapp
+  ports:
+  - port: <Port>
+    targetPort: <Target Port>
+...
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jabaewbapp
+spec:
+  selector:
+    matchLabels:
+      app: javawebapp
+  template:
+    metadata:
+      labels:
+        app: javawebapp
+    spec:
+      containers:
+      - name: javawebapp
+        image: dockerhandson/java-web-app:3
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javawebapp
+  type: loadbalancer
+spec:
+  selector:
+    app: javawebappapp
+  ports:
+  - port: "80"
+    targetPort: "8080"
