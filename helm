@@ -1,0 +1,33 @@
+ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+
+  chmod +x get_helm.sh
+
+  ./get_helm.sh
+
+  helm version
+
+helm create helloworld
+
+ls
+
+cd helloworld/
+
+tree helloworld
+
+vi values.yml --> change service clusterIP to NodePort
+
+helm install myhelloworld helloworld
+ 
+helm list -a
+
+helm uninstall myhelloworld
+
+helm upgrade myhelloworldrelease helloworld
+
+helm rollback myhelloworldrelease 1 <-----   ( 1 is REVISION number. )
+ 
+helm install myhelloworldrelease --debug --dry-run myhelloworld
+
+helm template helloworld/
+
+helm lint helloworld
