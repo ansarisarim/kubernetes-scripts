@@ -1,10 +1,11 @@
 # run it impretively.
-kubectl create secret docker-registry mydocercred --docker-server=https://index.docker.io/v1/ --docker-username=sarim --docker-password=sarim123
+kubectl create secret docker-registry mydocercred --docker-server=https://index.docker.io/v1/ --docker-username=sarim --docker-password=sarim123 -n test
 
 # use the name mydockercred.
 
 apiVersion: v1
 kind: Pod
+namespace: test
 metadata:
   name: private-reg
 spec:
@@ -13,4 +14,5 @@ spec:
     image: <your-private-image>
   imagePullSecrets:
   - name: mydockercred
+
 
