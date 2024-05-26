@@ -1,6 +1,8 @@
 # run it impretively.
 kubectl create secret docker-registry mydocercred --docker-server=https://index.docker.io/v1/ --docker-username=sarim --docker-password=sarim123 -n test
 
+kubectl get secerete -n test
+
 # use the name mydockercred.
 
 apiVersion: v1
