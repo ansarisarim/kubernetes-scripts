@@ -172,59 +172,7 @@ spec:
 
 
 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: db-config
-data:
-  url: my.sql//@qdwd
-  username: db@123
-  password: sarime2dwd
 
----
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod01
-  namespace: default
-spec:
-  containers:
-    - name: database
-      image: mysql
-      env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: db-config
-              key: password
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: db-config
-              key: password
-
-
-
-
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    test: liveness
-  name: pode-abc
-spec:
-  containers:
-  - name: container-1
-    image: ubuntu
-    livenessProbe:
-      exec:
-        command:
-        - cat
-        - /tmp/healthy
-      initialDelaySeconds: 120   <we specify according over how much over container take time to starte. otherwise it check container not
-                                  not starte kubelete kill the container and restarte it again and again >
-      periodSeconds: 5
 
 
 
